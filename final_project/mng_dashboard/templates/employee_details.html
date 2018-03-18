@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Employee Details</title>
+</head>
+<body>
+{% extends 'base.html' %}
+
+
+{% block content %}
+<br>
+<div class="heading-employee" style="float: left">
+    <h2>{{ employee.name }}</h2>
+</div>
+
+
+<div class="dropdown show" style="float: right">
+  <a class="btn btn-secondary  btn-sm dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Dropdown link
+  </a>
+
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+    <a class="dropdown-item" href="{% url 'udpade-employee' employee.pk $}">Update data</a>
+    <a class="dropdown-item" href="#">Desactivate Employee</a>
+  </div>
+</div>
+<br>
+
+<table class="table" style="clear: both">
+  <thead>
+    <tr>
+      <th scope="col">Email: </th>
+      <th scope="col">SAP ID: </th>
+      <th scope="col">Territories:</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>{{employee.email}}</td>
+      <td>{{employee.int_id}}</td>
+      <td>To be added</td>
+    </tr>
+  </tbody>
+</table>
+
+
+
+<h4>Performance: </h4>
+
+<h4>Holiday tracking:</h4>
+
+    <a href="{% url 'time-manager' employee.id %}" class="btn btn-secondary btn-sm active add-new-timeexp-event"
+       role="button" aria-pressed="true">Add New Event</a>
+
+
+
+{% include 'calendar.html' %}
+
+{% endblock %}
+
+
+<!--<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>-->
+<!--<script type="text/javascript" src="js/app.js"></script>-->
+</body>
+</html>
