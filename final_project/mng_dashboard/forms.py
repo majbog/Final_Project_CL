@@ -29,7 +29,7 @@ class NewEmployeeForm(forms.ModelForm):
 
 
 class TimeExpForm(forms.Form):
-    clerk = forms.IntegerField(label = "Clerk's ID", widget= forms.HiddenInput)
+    clerk = forms.IntegerField(label="Clerk's ID", widget=forms.HiddenInput)
     type = forms.ChoiceField(choices=TIME_EXP_TYPES)
     date = forms.DateField(widget=forms.DateInput(attrs={'class': 'datepicker'}))
 

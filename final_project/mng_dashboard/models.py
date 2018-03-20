@@ -51,7 +51,7 @@ CONTACT_TYPES = (
 def validate_emp_mail(mail):
     reg = re.compile('^[A-Za-z0-9._%+-]+@emp_mail.com$')
     if not reg.match(mail):
-        raise ValidationError("The correct domain for the employee's email is @emp_mail.com")
+        raise ValidationError("The correct domain for employee's email is @emp_mail.com")
 
 
 # Create your models here.
@@ -86,7 +86,7 @@ class Territory(models.Model):
 class TimeExp(models.Model):
     date = models.DateField()
     type = models.IntegerField(choices=TIME_EXP_TYPES)
-    clerk = models.ManyToManyField(Employee)
+    clerk = models.ForeignKey(Employee, on_delete=None)
 
     def __str__(self):
         return "{}" .format(self.clerk.name)
@@ -97,6 +97,7 @@ class Results(models.Model):
     territory = models.ForeignKey(Territory, on_delete=None)
     result = models.IntegerField()
     unallocated_cash = models.IntegerField()
+    percentage = models.DecimalField(decimal_places=2, max_digits=3)
 
 
 class Productivity(models.Model):

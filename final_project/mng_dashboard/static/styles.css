@@ -1,0 +1,21 @@
+body{
+    margin-top:0;
+    margin-left:100px;
+    margin-right:100px;
+    background-color: lightgrey;
+}
+
+li{
+    list-style-type: none;
+}
+
+#caleandar{
+    margin-top:10px;
+    float: left;
+}
+
+#time-schedule{
+    margin-top: 40px;
+    margin-left: 100px;
+    display: inline-block;
+}

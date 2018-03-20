@@ -16,7 +16,7 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from mng_dashboard.views import LogInView, NewEmployeeView, ShowResults, ShowEmployeeView, \
-    UpdateEmployeeView, ManageTimeView
+    UpdateEmployeeView, ManageTimeView, DeleteEventView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -25,5 +25,8 @@ urlpatterns = [
     url(r'^employee/new/$', NewEmployeeView.as_view(), name='new-employee'),
     url(r'^employee/(?P<employee_id>(\d+))/$', ShowEmployeeView.as_view(), name='employee-details'),
     url(r'^employee/(?P<pk>(\d+))/update/$', UpdateEmployeeView.as_view(), name='update-employee'),
-    url(r'^employee/(?P<employee_id>(\d+))/time_manager/$', ManageTimeView.as_view(), name='time-manager')
+    url(r'^employee/(?P<employee_id>(\d+))/time_manager/$', ManageTimeView.as_view(), name='time-manager'),
+    url(r'^employee/(?P<employee_id>(\d+))/remove_event/(?P<event_id>(\d+))',
+        DeleteEventView.as_view(), name='delete-event'
+        )
 ]

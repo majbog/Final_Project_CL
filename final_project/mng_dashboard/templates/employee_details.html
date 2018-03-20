@@ -11,7 +11,7 @@
 {% block content %}
 <br>
 <div class="heading-employee" style="float: left">
-    <h2>{{ employee.name }}</h2>
+    <h2>{{ employee.name }}{% if not employee.active %}(not active){% endif %}</h2>
 </div>
 
 
@@ -22,8 +22,8 @@
   </a>
 
   <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-    <a class="dropdown-item" href="{% url 'udpade-employee' employee.pk $}">Update data</a>
-    <a class="dropdown-item" href="#">Desactivate Employee</a>
+    <a class="dropdown-item" href="{% url 'update-employee' employee.pk $}">Update data</a>
+    <a class="dropdown-item" href="#">Deactivate Employee</a>
   </div>
 </div>
 <br>
@@ -40,7 +40,7 @@
     <tr>
       <td>{{employee.email}}</td>
       <td>{{employee.int_id}}</td>
-      <td>To be added</td>
+        <td>{% for territory in territories.all %} <li>{{territory.get_code_display}}</li> {% endfor %}</td>
     </tr>
   </tbody>
 </table>
@@ -49,15 +49,49 @@
 
 <h4>Performance: </h4>
 
-<h4>Holiday tracking:</h4>
-
-    <a href="{% url 'time-manager' employee.id %}" class="btn btn-secondary btn-sm active add-new-timeexp-event"
+<h4>Holiday tracking:</h4><a href="{% url 'time-manager' employee.id %}" class="btn btn-secondary btn-sm active add-new-timeexp-event"
        role="button" aria-pressed="true">Add New Event</a>
+
+    <br>
+    <p>Employee has <strong>{{vacations_to_be_taken}}</strong> days left to schedule as his/her Regular Vacation Time</p>
+
+
+
 
 
 
 {% include 'calendar.html' %}
 
+<div id="time-schedule">
+
+      <h5>Vacation:</h5>
+        <table class="table" style="clear: both">
+            {% for vacation in all_vacations_to_happen %}
+            <tr>
+              <td>{{vacation.date}}</td>
+              <td><a href="#" class="btn btn-secondary btn-sm active"
+               role="button" aria-pressed="true">Delete</a></td>
+            </tr>
+            {% empty %}
+            <p>No vacation scheduled at the moment</p>
+            {% endfor  %}
+        </table>
+      <h5>Trainings:</h5>
+        <table class="table" style="clear: both">
+              {% for training in all_trainings_to_happen %}
+              <tr>
+                <td>{{training.date}}</td>
+                <td><a href="#" class="btn btn-secondary btn-sm active"
+                 role="button" aria-pressed="true">Delete</a></td>
+              </tr>
+              {% empty %}
+              <p>No training scheduled at the moment</p>
+              {% endfor  %}
+          </table>
+
+
+
+</div>
 {% endblock %}
 
 
