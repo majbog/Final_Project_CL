@@ -8,22 +8,19 @@ $(function(){
 
 
     $(".datepicker").datepicker({
-  dateFormat: "yy-mm-dd"
-});
+    dateFormat: "yy-mm-dd"
+    });
 
-    var dateHolder = $("#id_date");
+    var lists = $(".absent-clerks");
+    
+    lists.each(function (i, e) {
+        if ($(e).children().length > 2){
+            var date_th = $(this).prev();
+            var span = date_th.find($("span.badge-warning"));
+            span.css("display", "inline")
+        }
 
-
-    //
-    //
-    //
-    // $('.show-more-dates').click(function () {
-    //     var dateHolderToRepeat = $("form li");
-    //     var newDateHolder = dateHolderToRepeat.clone(true);
-    //     newDateHolder.addClass("datepicker");
-    //     newDateHolder.insertBefore($(this))
-    //
-    // });
+    });
 
 
   });

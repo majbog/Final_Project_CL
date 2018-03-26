@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{%  block content %}
+
+<div id="results-box">
+<h3>Results - Overview</h3>
+
+    {{ gen_graph| safe }}
+
+    <h4>Productivity: </h4>
+    <p><strong>Average performance: </strong>{{ av_performance }} contacts/day</p>
+    <p><strong>Best performers: </strong></p>
+
+    <ul>
+        {% for bp in best_performers %}
+        <li>{{ bp.name }}</li>
+        {% endfor %}
+    </ul>
+
+    <p><strong>Number of contacts to be made in order to meet this month's SLAs: </strong>
+        {{ prod_slas }} <small>({{ av_prod_for_slas }} per day)</small></p>
+
+    {{ prod_graph| safe }}
+
+<h3>Unallocated Cash: </h3>
+
+    {{ un_graph|safe }}
+</div>
+{% endblock %}

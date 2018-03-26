@@ -3,29 +3,29 @@ from django.core.exceptions import ValidationError
 import re
 
 
-COLL_GROUPS =(
-    (1, "Madrid"),
-    (2, "Barcelona"),
-    (3, "Valencia"),
-    (4, "Alicante"),
-    (5, "Bilbao"),
-    (6, "Zaragoza"),
-    (7, "Malaga"),
-    (8, "Sevilla"),
-    (9, "GLOBAL")
-)
-
-COLL_CODES =(
-    (1, "MAD"),
-    (2, "BCN"),
-    (3, "VLC"),
-    (4, "ALC"),
-    (5, "BIO"),
-    (6, "ZAZ"),
-    (7, "AGP"),
-    (8, "SVQ"),
-    (9, "OVERDUE RECEIVABLES")
-)
+# COLL_GROUPS =(
+#     (1, "Madrid"),
+#     (2, "Barcelona"),
+#     (3, "Valencia"),
+#     (4, "Alicante"),
+#     (5, "Bilbao"),
+#     (6, "Zaragoza"),
+#     (7, "Malaga"),
+#     (8, "Sevilla"),
+#     (9, "GLOBAL")
+# )
+#
+# COLL_CODES =(
+#     (1, "MAD"),
+#     (2, "BCN"),
+#     (3, "VLC"),
+#     (4, "ALC"),
+#     (5, "BIO"),
+#     (6, "ZAZ"),
+#     (7, "AGP"),
+#     (8, "SVQ"),
+#     (9, "OVERDUE RECEIVABLES")
+# )
 
 TIME_EXP_TYPES = (
     (1, "Sick Leave"),
@@ -34,12 +34,12 @@ TIME_EXP_TYPES = (
     (4, "Overtime")
 )
 
-CONTACT_RESULTS = (
-    (1, "Customer Reached"),
-    (2, "Customer Not Reached"),
-    (3, "Try Again Later"),
-    (4, "Message Left")
-)
+# CONTACT_RESULTS = (
+#     (1, "Customer Reached"),
+#     (2, "Customer Not Reached"),
+#     (3, "Try Again Later"),
+#     (4, "Message Left")
+# )
 
 CONTACT_TYPES = (
     (1, "Inbound call"),
@@ -78,9 +78,17 @@ class Employee(models.Model):
 
 
 class Territory(models.Model):
-    name = models.IntegerField(choices=COLL_GROUPS)
-    code = models.IntegerField(choices=COLL_CODES)
+    name = models.CharField(max_length=64)
     clerks = models.ManyToManyField(Employee)
+
+    @staticmethod
+    def list_terr_names():
+        territories_names = []
+        for ter in Territory.objects.all():
+            territories_names.append(ter.name)
+        return territories_names
+
+
 
 
 class TimeExp(models.Model):
@@ -92,18 +100,22 @@ class TimeExp(models.Model):
         return "{}" .format(self.clerk.name)
 
 
-class Results(models.Model):
+class TerritoryResults(models.Model):
     date = models.DateField()
     territory = models.ForeignKey(Territory, on_delete=None)
-    result = models.IntegerField()
-    unallocated_cash = models.IntegerField()
-    percentage = models.DecimalField(decimal_places=2, max_digits=3)
+    result = models.DecimalField(max_digits=15, decimal_places=2)
+
+
+class UnallocatedResults(models.Model):
+    date = models.DateField()
+    unallocated_cash = models.DecimalField(max_digits=15, decimal_places=2)
 
 
 class Productivity(models.Model):
     date = models.DateField()
-    clerk = models.ManyToManyField(Employee)
-    result = models.IntegerField(choices=CONTACT_RESULTS)
+    clerk = models.ForeignKey(Employee, on_delete=None)
+    number = models.IntegerField()
+    # result = models.IntegerField(choices=CONTACT_RESULTS)
     type = models.IntegerField(choices=CONTACT_TYPES)
 
 

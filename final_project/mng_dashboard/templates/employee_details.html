@@ -9,21 +9,29 @@
 
 
 {% block content %}
+
 <br>
 <div class="heading-employee" style="float: left">
-    <h2>{{ employee.name }}{% if not employee.active %}(not active){% endif %}</h2>
+    <h2>{{ employee.name }}</h2>
+    <h5>{% if not employee.active %}
+        (not active)
+        {% endif %}
+        {% if is_best %}
+        <span class="badge badge-success">Best Performer</span>
+        {% endif %}
+    </h5>
 </div>
 
 
 <div class="dropdown show" style="float: right">
   <a class="btn btn-secondary  btn-sm dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    Dropdown link
+    Edit
   </a>
 
   <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-    <a class="dropdown-item" href="{% url 'update-employee' employee.pk $}">Update data</a>
-    <a class="dropdown-item" href="#">Deactivate Employee</a>
+    <a class="dropdown-item" href="{% url 'update-employee' employee.pk %}">Update data</a>
+    <a class="dropdown-item" href="{% url 'deactivate-employee' employee.pk %}">Change active status</a>
   </div>
 </div>
 <br>
@@ -33,14 +41,19 @@
     <tr>
       <th scope="col">Email: </th>
       <th scope="col">SAP ID: </th>
-      <th scope="col">Territories:</th>
+      <th scope="col">Territories: </th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>{{employee.email}}</td>
       <td>{{employee.int_id}}</td>
-        <td>{% for territory in territories.all %} <li>{{territory.get_code_display}}</li> {% endfor %}</td>
+        <td>
+            {% for territory in territories.all %}
+            <li>{{territory.name}}
+            </li>
+            {% endfor %}
+        </td>
     </tr>
   </tbody>
 </table>
@@ -48,6 +61,9 @@
 
 
 <h4>Performance: </h4>
+
+
+     {{ clerk_prod_graph|safe }}
 
 <h4>Holiday tracking:</h4><a href="{% url 'time-manager' employee.id %}" class="btn btn-secondary btn-sm active add-new-timeexp-event"
        role="button" aria-pressed="true">Add New Event</a>
@@ -69,8 +85,9 @@
             {% for vacation in all_vacations_to_happen %}
             <tr>
               <td>{{vacation.date}}</td>
-              <td><a href="#" class="btn btn-secondary btn-sm active"
-               role="button" aria-pressed="true">Delete</a></td>
+              <td><a href="{% url 'del_event_from_emp_profile' employee.id vacation.id %}"
+                     class="btn btn-secondary btn-sm active"
+                     role="button" aria-pressed="true">Delete</a></td>
             </tr>
             {% empty %}
             <p>No vacation scheduled at the moment</p>
@@ -81,8 +98,9 @@
               {% for training in all_trainings_to_happen %}
               <tr>
                 <td>{{training.date}}</td>
-                <td><a href="#" class="btn btn-secondary btn-sm active"
-                 role="button" aria-pressed="true">Delete</a></td>
+                <td><a href="{% url 'del_event_from_emp_profile' employee.id training.id %}"
+                       class="btn btn-secondary btn-sm active"
+                       role="button" aria-pressed="true">Delete</a></td>
               </tr>
               {% empty %}
               <p>No training scheduled at the moment</p>

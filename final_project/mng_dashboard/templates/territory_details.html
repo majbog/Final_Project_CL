@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{%  block content %}
+
+<div id="results-box">
+<h3>{{ territory.name }}</h3>
+
+ <table class="table">
+  <thead>
+    <tr>
+      <th scope="col"><a href="{% url 'terr-split' territory.id %}"
+           class="btn btn-secondary btn-sm active"
+           role="button" aria-pressed="true">Update</a>
+      </th>
+      <th scope="col">Clerks:</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for clerk in clerks %}
+    <tr>
+      <th scope="row"></th>
+      <td>{{ clerk.name }}</td>
+    </tr>
+  {% empty %}
+    <tr>
+      <td colspan="2"> No clerk assigned</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+
+    {{ terr_graph|safe }}
+</div>
+{% endblock %}
+
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">
+          <a href="{% url 'terr-split' territory.id %}"
+           class="btn btn-secondary btn-sm active"
+           role="button" aria-pressed="true">Update
+          </a>
+          Clerks:
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for clerk in clerks %}
+    <tr>
+      <th scope="row"></th>
+      <td>{{ clerk.name }}</td>
+    </tr>
+  {% empty %}
+    <tr>
+      <th colspan="2"> No clerk</th>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>

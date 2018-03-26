@@ -19,3 +19,7 @@ li{
     margin-left: 100px;
     display: inline-block;
 }
+
+#results-box{
+    margin-top: 30px;
+}

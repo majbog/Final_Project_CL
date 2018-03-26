@@ -1,6 +1,8 @@
 from django import forms
-from .models import Employee, TimeExp, TIME_EXP_TYPES
+from .models import Employee, TIME_EXP_TYPES, Territory
 from django.contrib.auth.models import User
+
+
 
 
 class LogInForm(forms.ModelForm):
@@ -32,6 +34,13 @@ class TimeExpForm(forms.Form):
     clerk = forms.IntegerField(label="Clerk's ID", widget=forms.HiddenInput)
     type = forms.ChoiceField(choices=TIME_EXP_TYPES)
     date = forms.DateField(widget=forms.DateInput(attrs={'class': 'datepicker'}))
+
+
+class AddTerritoryToEmployeeForm(forms.Form):
+    clerk = forms.IntegerField(label="Clerk's ID", widget=forms.HiddenInput)
+    territory = forms.ChoiceField(label="Collection Group Name", choices=Territory.list_terr_names())
+
+
 
 
 

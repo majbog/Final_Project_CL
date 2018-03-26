@@ -15,18 +15,23 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
-from mng_dashboard.views import LogInView, NewEmployeeView, ShowResults, ShowEmployeeView, \
-    UpdateEmployeeView, ManageTimeView, DeleteEventView
+from mng_dashboard.views import LogInView, LogOutView, NewEmployeeView, ShowEmployeeView, \
+    UpdateEmployeeView, ManageTimeView, DeactivateEmployeeView, del_event_from_emp_profile, \
+    ShowGeneralResults, ShowTerritoryView, ShowTimeExpView, UpdateTerritorySplit
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^main/$', ShowResults.as_view(), name='main'),
     url(r'^login/$', LogInView.as_view(), name="login"),
+    url(r'^logout/$', LogOutView.as_view(), name = "logout"),
     url(r'^employee/new/$', NewEmployeeView.as_view(), name='new-employee'),
     url(r'^employee/(?P<employee_id>(\d+))/$', ShowEmployeeView.as_view(), name='employee-details'),
     url(r'^employee/(?P<pk>(\d+))/update/$', UpdateEmployeeView.as_view(), name='update-employee'),
     url(r'^employee/(?P<employee_id>(\d+))/time_manager/$', ManageTimeView.as_view(), name='time-manager'),
-    url(r'^employee/(?P<employee_id>(\d+))/remove_event/(?P<event_id>(\d+))',
-        DeleteEventView.as_view(), name='delete-event'
-        )
+    url(r'^employee/(?P<pk>(\d+))/deactivate/$', DeactivateEmployeeView.as_view(), name='deactivate-employee'),
+    url(r'^employee/(?P<employee_id>(\d+))/del_event/(?P<event_id>(\d+))/$', del_event_from_emp_profile,
+        name='del_event_from_emp_profile'),
+    url(r'^results/$', ShowGeneralResults.as_view(), name='show-results'),
+    url(r'^results/territory/(?P<territory_id>(\d+))/$', ShowTerritoryView.as_view(), name='terr-details'),
+    url(r'^results/territory/(?P<pk>(\d+))/update/$', UpdateTerritorySplit.as_view(), name='terr-split'),
+    url(r'^time_expenses/$', ShowTimeExpView.as_view(), name='time-expenses')
 ]
