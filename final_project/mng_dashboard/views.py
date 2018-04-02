@@ -222,7 +222,34 @@ class ShowGeneralResults(LoginRequiredMixin, View):
 
         # CHECK MAIL STATUS
 
-        
+        all_mail_dates = [r.date for r in MailStatus.objects.all()]
+        all_mail_dates.sort()
+
+        sent_mails_to_show =[]
+        received_mails_to_show =[]
+        backlog_to_show=[]
+
+        for date in all_mail_dates[-30:]:
+            sent_mail = MailStatus.objects.get(date=date).sent
+            sent_mails_to_show.append(sent_mail)
+            received_mail = MailStatus.objects.get(date=date).received
+            received_mails_to_show.append(received_mail)
+            backloged = MailStatus.objects.get(date=date).backlog
+            backlog_to_show.append(backloged)
+            
+        sm_trace = go.Bar(
+            x=all_mail_dates[-30:], y= sent_mails_to_show, name='Sent eMails'
+        )
+        rm_trace= go.Bar(
+            x=all_mail_dates[-30:], y= received_mails_to_show, name='Incoming eMails'
+        )
+        blog_trace = go.Bar(
+            x=all_mail_dates[-30:], y=backlog_to_show, name='Backlog'
+        )
+
+        mail_data = [sm_trace, rm_trace, blog_trace]
+        mail_div = opy.plot(mail_data, auto_open=False, output_type='div')
+
 
         ctx = {
             'prod_graph': prod_div,
@@ -233,7 +260,8 @@ class ShowGeneralResults(LoginRequiredMixin, View):
             "active_employees": Employee.active_employees(),
             "all_territories": Territory.objects.all(),
             "prod_slas": prod_need_to_meet_slas,
-            "av_prod_for_slas": avprod_to_meet_slas
+            "av_prod_for_slas": avprod_to_meet_slas,
+            "mail_div": mail_div
             }
 
         return render(request, "general_results.html", ctx)

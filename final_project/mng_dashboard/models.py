@@ -89,8 +89,6 @@ class Territory(models.Model):
         return territories_names
 
 
-
-
 class TimeExp(models.Model):
     date = models.DateField()
     type = models.IntegerField(choices=TIME_EXP_TYPES)
