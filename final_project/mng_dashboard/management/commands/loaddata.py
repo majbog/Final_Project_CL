@@ -1,12 +1,12 @@
 from django.core.management.base import BaseCommand, CommandError
 import pandas as pd
-from mng_dashboard.models import Employee, TerritoryResults, UnallocatedResults, Territory, Productivity
+from mng_dashboard.models import Employee, TerritoryResults, UnallocatedResults, Territory, Productivity, MailStatus
 import datetime
 
 
 
 class Command(BaseCommand):
-    help = 'Command to do........'
+    help = 'Command to do upload report data from Excel File (path: /Users/majbog/workspace/Data Source/, format .xls)'
 
     def handle(self, *args, **options):
         try:
@@ -74,6 +74,19 @@ class Command(BaseCommand):
 
             unalloc_day_result = day_results_df.loc["Unallocated", "Amount"]
             UnallocatedResults.objects.create(date=reported_date, unallocated_cash=unalloc_day_result)
+
+            # MAIL MANAGEMENT
+
+            mail_df = pd.read_excel("/Users/majbog/workspace/Data Source/sample_xls1.xls", sheet_name="mail_mng",
+                                    index_col="Status")
+
+            sent_mails = mail_df.loc["Sent", "Amount"]
+            received_mails = mail_df.loc["Received", "Amount"]
+            backloged = mail_df.loc["Backlog", "Amount"]
+
+            MailStatus.objects.create(date=reported_date, sent=sent_mails, received=received_mails, backlog=backloged)
+
+
 
 
 

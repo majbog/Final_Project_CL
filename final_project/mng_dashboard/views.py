@@ -220,6 +220,10 @@ class ShowGeneralResults(LoginRequiredMixin, View):
 
         request.session['ids_best_perf'] = ids_best_perf
 
+        # CHECK MAIL STATUS
+
+        
+
         ctx = {
             'prod_graph': prod_div,
             'gen_graph': gen_div,

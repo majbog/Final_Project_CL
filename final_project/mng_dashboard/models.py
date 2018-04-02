@@ -119,3 +119,8 @@ class Productivity(models.Model):
     type = models.IntegerField(choices=CONTACT_TYPES)
 
 
+class MailStatus(models.Model):
+    date = models.DateField()
+    sent = models.IntegerField()
+    received = models.IntegerField()
+    backlog = models.IntegerField()

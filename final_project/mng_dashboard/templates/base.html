@@ -31,10 +31,10 @@
                     <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="#">Results</a>
+                    <a class="nav-link" href="{% url 'show-results' %}">Results</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="#">Holiday/Overtime Tracker</a>
+                    <a class="nav-link" href="{% url 'time-expenses'  %}">Holiday/Overtime Tracker</a>
                   </li>
                   <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -50,7 +50,7 @@
                         <a class="dropdown-item" href="{% url 'new-employee' %}">Add new employee</a>
                     </div>
                     <li class="nav-item">
-                    <a class="nav-link" href="#">Log Out</a>
+                    <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
                   </li>
                   </li>
 
