@@ -250,18 +250,25 @@ class ShowGeneralResults(LoginRequiredMixin, View):
         mail_data = [sm_trace, rm_trace, blog_trace]
         mail_div = opy.plot(mail_data, auto_open=False, output_type='div')
 
+        backlog_atm = MailStatus.objects.get(date=all_mail_dates[-1]).backlog
+        
+        ftes_needed = backlog_atm/60
+
+
+
 
         ctx = {
             'prod_graph': prod_div,
             'gen_graph': gen_div,
             'un_graph': un_div,
             'best_performers':best_performers,
-            "av_performance": av_performance,
+            "av_performance": str(round(av_performance)),
             "active_employees": Employee.active_employees(),
             "all_territories": Territory.objects.all(),
             "prod_slas": prod_need_to_meet_slas,
             "av_prod_for_slas": avprod_to_meet_slas,
-            "mail_div": mail_div
+            "mail_div": mail_div,
+            "ftes_needed": round(ftes_needed,2)
             }
 
         return render(request, "general_results.html", ctx)
@@ -345,6 +352,17 @@ class ShowEmployeeView(LoginRequiredMixin, View):
         fig = go.Figure(data=clerks_data, layout=layout)
         clerk_div = opy.plot(fig, auto_open=False, output_type='div')
 
+        # productivity tendencies
+
+        engine = create_engine('postgresql+psycopg2://postgres:coderslab@localhost/coll_db')
+        prod_clerk_df = pd.read_sql_query(
+            'SELECT "date", "number", "type" FROM mng_dashboard_productivity WHERE clerk_id={}' .format(employee_id), con=engine)
+        
+        av_clerks_in_call = prod_clerk_df[prod_clerk_df.type==1].number.mean()
+        av_clerks_out_call = prod_clerk_df[prod_clerk_df.type==2].number.mean()
+        # av_clerks_in_mail = prod_clerk_df[prod_clerk_df.type==3].number.mean()
+        # av_clerks_out_mail = prod_clerk_df[prod_clerk_df.type==4].number.mean()
+        
 
         ctx = {
             "employee": employee,
@@ -355,7 +373,10 @@ class ShowEmployeeView(LoginRequiredMixin, View):
             "territories": territories,
             "all_territories": Territory.objects.all(),
             "clerk_prod_graph": clerk_div,
-            "is_best":is_best
+            "is_best":is_best,
+            "av_in_calls": round(av_clerks_in_call,2),
+            "av_out_calls": round(av_clerks_out_call,2)
+            
 
         }
         return render(request, "employee_details.html", ctx)
